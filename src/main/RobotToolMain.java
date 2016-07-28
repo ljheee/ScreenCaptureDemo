@@ -105,9 +105,7 @@ public class RobotToolMain extends JWindow{
 		setVisible(true);
 	}
 	
-	public static void main(String[] args){
-		new RobotToolMain();
-	}
+	
 	
 	/**
 	 * »æÖÆº¯Êý¡£
@@ -214,6 +212,12 @@ public class RobotToolMain extends JWindow{
 			if(e.getKeyChar()==KeyEvent.VK_Z)
 				System.exit(0);
 		}
+	}
+	
+	
+	
+	public static void main(String[] args){
+		new RobotToolMain();
 	}
 	
 }

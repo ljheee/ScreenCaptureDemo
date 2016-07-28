@@ -46,7 +46,9 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author		Administrator
  */
 public class RobotToolMain extends JWindow{
-
+	
+	private static final long serialVersionUID = 4688016771324191291L;
+	
 	/** 鼠标指针被按下时的水平位置 */
 	private int mouseX = -1;
 	/** 鼠标指针被按下时的垂直位置 */
@@ -69,6 +71,8 @@ public class RobotToolMain extends JWindow{
 	
 	/** 保存分辨率大小的当前屏幕显示的图像 */
 	private BufferedImage image = null;
+	
+	private BufferedImage subImage = null;
 	
 	
 	public RobotToolMain() {
@@ -98,11 +102,13 @@ public class RobotToolMain extends JWindow{
 		
 		GraphicsEnvironment environment=GraphicsEnvironment.getLocalGraphicsEnvironment();//通过this对象取得GraphicsDevice
 		GraphicsDevice device=environment.getDefaultScreenDevice();
-		if(device.isFullScreenSupported())
+		if(device.isFullScreenSupported()){
 			device.setFullScreenWindow(this);
-		else
+		}else{
 			JOptionPane.showMessageDialog(null, "抱歉，您的设备不支持全屏");
-		setVisible(true);
+			setVisible(true);
+		}
+			
 	}
 	
 	
@@ -147,10 +153,12 @@ public class RobotToolMain extends JWindow{
 	 * @author		Administrator
 	 */
 	private class MouseEventImpl extends MouseAdapter{
-		@Override
-		/**
+		
+		/*
 		 * 鼠标移动后坐标的变化。
+		 * @see java.awt.event.MouseAdapter#mouseDragged(java.awt.event.MouseEvent)
 		 */
+		@Override
 		public void mouseDragged(MouseEvent e) {
 			//super.mouseDragged(e);
 			mouseXNow = e.getXOnScreen();
@@ -175,9 +183,11 @@ public class RobotToolMain extends JWindow{
 		 * 截图完成后，保存图像。
 		 */
 		public void mouseReleased(MouseEvent e) {
-			super.mouseReleased(e);
+//			super.mouseReleased(e);
+			
+			RobotToolMain.this.setVisible(false);;
 			if(mouseX>=0 && mouseXNow>=0 && mouseY>=0 && mouseYNow>=0){
-				BufferedImage subImage = image.getSubimage(mouseX>mouseXNow?mouseXNow:mouseX, mouseY>mouseYNow?mouseYNow:mouseY, Math.abs(mouseXNow-mouseX), Math.abs(mouseYNow-mouseY));
+				subImage = image.getSubimage(mouseX>mouseXNow?mouseXNow:mouseX, mouseY>mouseYNow?mouseYNow:mouseY, Math.abs(mouseXNow-mouseX), Math.abs(mouseYNow-mouseY));
 				JFileChooser chooser = new JFileChooser();
 				//chooser.setName("Java未命名截图"+new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
 				chooser.setCurrentDirectory(new File("."+File.separator+"ss"));
@@ -194,8 +204,10 @@ public class RobotToolMain extends JWindow{
 					//System.out.println(file.getAbsolutePath());
 					try {
 						ImageIO.write(subImage,"gif",new File(file.getAbsoluteFile()+exname[0]));
+						JOptionPane.showMessageDialog(RobotToolMain.this, "Save Success");
 					} catch (IOException e1) {
-						JOptionPane.showMessageDialog(null, "保存图片时发生错误:"+e1.getMessage());
+						JOptionPane.showMessageDialog(RobotToolMain.this, "保存图片时发生错误:"+e1.getMessage());
+						e1.printStackTrace();
 					}
 				}
 				System.exit(0);

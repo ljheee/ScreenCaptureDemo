@@ -8,7 +8,7 @@
   * Sr	Date		Modified By		Why & What is modified
   * 1.	2008-8-20 	Ð¡Öí     		ÐÂ½¨
   **/
-package main;
+package demo1;
 
 import java.awt.AWTException;
 import java.awt.Color;

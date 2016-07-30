@@ -1,4 +1,4 @@
-package main;
+package demo1;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
